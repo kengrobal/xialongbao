@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小籠包及飲品訂貨系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 90%;
+            max-width: 300px;
+        }
+        .container {
+            padding: 10px;
+        }
+        @media (max-width: 600px) {
+            table {
+                font-size: 14px;
+            }
+            input[type="number"] {
+                width: 40px;
+            }
+            .container {
+                padding: 5px;
+            }
+        }
+        /* 修改後的 CSS 樣式 */
+        #drinkTable tfoot td:nth-child(5) {
+            text-align: right;
+            padding-right: 10px;
+        }
+        #phone-last-three, #selected-time {
+            width: 150px;
+            height: 30px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .input-group {
+            display: flex; /* 使用 flexbox 佈局 */
+            align-items: center; /* 垂直對齊 */
+            justify-content: center; /* 水平置中 */
+            margin-bottom: 5px; /* 添加一些間距 */
+        }
+        label {
+            margin-right: 5px; /* 增加 label 和 input 之間的間距 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>小籠包及飲品訂貨系統</h1>
+
+        <table id="orderTable">
+            <thead>
+                <tr><th>數量</th><th>價格/籠</th><th>蔥</th><th>薑絲</th><th>醬油膏</th><th>辣油</th><th>金額</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="number" class="order-input quantity" data-price="85" min="0" oninput="calculateTotal()"></td>
+                    <td>85</td>
+                    <td><input type="checkbox" class="scallion"></td>
+                    <td><input type="checkbox" class="ginger"></td>
+                    <td><input type="checkbox" class="soy-sauce"></td>
+                    <td><input type="checkbox" class="chili-oil"></td>
+                    <td class="order-total">0</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="order-input quantity" data-price="85" min="0" oninput="calculateTotal()"></td>
+                    <td>85</td>
+                    <td><input type="checkbox" class="scallion"></td>
+                    <td><input type="checkbox" class="ginger"></td>
+                    <td><input type="checkbox" class="soy-sauce"></td>
+                    <td><input type="checkbox" class="chili-oil"></td>
+                    <td class="order-total">0</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="order-input quantity" data-price="85" min="0" oninput="calculateTotal()"></td>
+                    <td>85</td>
+                    <td><input type="checkbox" class="scallion"></td>
+                    <td><input type="checkbox" class="ginger"></td>
+                    <td><input type="checkbox" class="soy-sauce"></td>
+                    <td><input type="checkbox" class="chili-oil"></td>
+                    <td class="order-total">0</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr><td colspan="5"></td><td>小計:</td><td id="xiaolongbao-subtotal">0</td></tr>
+            </tfoot>
+        </table>
+
+        <h2>飲品(500ML/杯)</h2>
+        <table id="drinkTable">
+            <thead>
+                <tr><th>數量(杯)</th><th>有糖豆漿25元</th><th>無糖豆漿25元</th><th>薏仁湯30元</th><th>米漿30元</th><th>金額</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>熱</td>
+                    <td><input type="number" min="0" class="drink-input hot" data-price="25" data-type="sweet-soy-milk" data-label="有糖豆漿熱" oninput="calculateTotal()"></td>
+                    <td><input type="number" min="0" class="drink-input hot" data-price="25" data-type="unsweet-soy-milk" data-label="無糖豆漿熱" oninput="calculateTotal()"></td>
+                    <td><input type="number" min="0" class="drink-input hot" data-price="30" data-type="barley-soup" data-label="薏仁湯熱" oninput="calculateTotal()"></td>
+                    <td><input type="number" min="0" class="drink-input hot" data-price="30" data-type="rice-milk" data-label="米漿熱" oninput="calculateTotal()"></td>
+                    <td id="drink-hot-total">0</td>
+                </tr>
+                <tr>
+                    <td>冷</td>
+                    <td><input type="number" min="0" class="drink-input cold" data-price="25" data-type="sweet-soy-milk" data-label="有糖豆漿冷" oninput="calculateTotal()"></td>
+                    <td><input type="number" min="0" class="drink-input cold" data-price="25" data-type="unsweet-soy-milk" data-label="無糖豆漿冷" oninput="calculateTotal()"></td>
+                    <td><input type="number" min="0" class="drink-input cold" data-price="30" data-type="barley-soup" data-label="薏仁湯冷" oninput="calculateTotal()"></td>
+                    <td><input type="number" min="0" class="drink-input cold" data-price="30" data-type="rice-milk" data-label="米漿冷" oninput="calculateTotal()"></td>
+                    <td id="drink-cold-total">0</td>
+                </tr>
+                <tfoot>
+                    <tr><td colspan="4"></td><td>小計:</td><td id="drink-subtotal">0</td></tr>
+                    <tr><td colspan="4"></td><td>總金額:</td><td id="total-amount">0</td></tr>
+                </tfoot>
+            </table>
+
+            <div class="input-group">
+                <label for="phone-last-three">輸入手機末三碼:</label>
+                <input type="number" id="phone-last-three" min="000" max="999">
+            </div>
+            <div class="input-group">
+                <label for="selected-time">預定取餐時間:</label>
+                <input type="time" id="selected-time" min="06:30" max="13:30">
+            </div>
+            <button onclick="submitOrder()">確定</button>
+            <button onclick="clearTable()">清除</button>
+        </div>
+
+<script>
+function calculateTotal() {
+  let xiaolongbaoTotal = 0;
+  document.querySelectorAll('.order-input.quantity').forEach((input, index) => {
+    const quantity = parseInt(input.value) || 0;
+    const pricePerBasket = parseInt(input.dataset.price) || 85;
+    const rowTotal = quantity * pricePerBasket;
+    document.querySelectorAll('.order-total')[index].textContent = rowTotal;
+    xiaolongbaoTotal += rowTotal;
+  });
+  document.getElementById('xiaolongbao-subtotal').textContent = xiaolongbaoTotal;
+
+  let drinkHotTotal = 0;
+  let drinkColdTotal = 0;
+  document.querySelectorAll('.drink-input.hot').forEach(input => {
+    drinkHotTotal += (parseInt(input.value) || 0) * (parseInt(input.dataset.price) || 0);
+  });
+  document.querySelectorAll('.drink-input.cold').forEach(input => {
+    drinkColdTotal += (parseInt(input.value) || 0) * (parseInt(input.dataset.price) || 0);
+  });
+
+  document.getElementById('drink-hot-total').textContent = drinkHotTotal;
+  document.getElementById('drink-cold-total').textContent = drinkColdTotal;
+  const drinkTotal = drinkHotTotal + drinkColdTotal;
+  document.getElementById('drink-subtotal').textContent = drinkTotal;
+  document.getElementById('total-amount').textContent = xiaolongbaoTotal + drinkTotal;
+}
+
+function submitOrder() {
+  const phoneInput = document.getElementById("phone-last-three").value.trim();
+  if (phoneInput.length < 3) {
+    alert("請輸入有效的手機號碼末三碼！");
+    return;
+  }
+  const phoneLastThree = phoneInput.slice(-3);
+  const time = document.getElementById("selected-time").value || new Date().toLocaleTimeString("zh-TW", { hour: '2-digit', minute: '2-digit' });
+  const totalAmount = document.getElementById('total-amount').textContent;
+
+  const orderRows = document.querySelectorAll("#orderTable tbody tr");
+  let orders = [];
+  let firstOrder = true;
+
+  // 收集飲料數量
+  const drinks = {
+    sweetSoyMilkHot: 0, sweetSoyMilkCold: 0,
+    unsweetSoyMilkHot: 0, unsweetSoyMilkCold: 0,
+    riceMilkHot: 0, riceMilkCold: 0,
+    barleySoupHot: 0, barleySoupCold: 0
+  };
+  document.querySelectorAll(".drink-input").forEach(input => {
+    const count = parseInt(input.value) || 0;
+    if (input.classList.contains("hot")) {
+      if (input.dataset.type === "sweet-soy-milk") drinks.sweetSoyMilkHot = count;
+      if (input.dataset.type === "unsweet-soy-milk") drinks.unsweetSoyMilkHot = count;
+      if (input.dataset.type === "rice-milk") drinks.riceMilkHot = count;
+      if (input.dataset.type === "barley-soup") drinks.barleySoupHot = count;
+    } else {
+      if (input.dataset.type === "sweet-soy-milk") drinks.sweetSoyMilkCold = count;
+      if (input.dataset.type === "unsweet-soy-milk") drinks.unsweetSoyMilkCold = count;
+      if (input.dataset.type === "rice-milk") drinks.riceMilkCold = count;
+      if (input.dataset.type === "barley-soup") drinks.barleySoupCold = count;
+    }
+  });
+
+  // 生成備註
+  const remarksArray = [];
+  if (drinks.sweetSoyMilkHot) remarksArray.push(`有糖豆漿熱${drinks.sweetSoyMilkHot}`);
+  if (drinks.sweetSoyMilkCold) remarksArray.push(`有糖豆漿冷${drinks.sweetSoyMilkCold}`);
+  if (drinks.unsweetSoyMilkHot) remarksArray.push(`無糖豆漿熱${drinks.unsweetSoyMilkHot}`);
+  if (drinks.unsweetSoyMilkCold) remarksArray.push(`無糖豆漿冷${drinks.unsweetSoyMilkCold}`);
+  if (drinks.riceMilkHot) remarksArray.push(`米漿熱${drinks.riceMilkHot}`);
+  if (drinks.riceMilkCold) remarksArray.push(`米漿冷${drinks.riceMilkCold}`);
+  if (drinks.barleySoupHot) remarksArray.push(`薏仁湯熱${drinks.barleySoupHot}`);
+  if (drinks.barleySoupCold) remarksArray.push(`薏仁湯冷${drinks.barleySoupCold}`);
+  const remarks = remarksArray.length > 0 ? remarksArray.join("/") : "";
+
+  // 處理小籠包訂單
+  orderRows.forEach((row, index) => {
+    const quantity = parseInt(row.querySelector(".quantity").value) || 0;
+    if (quantity > 0) {
+      const scallion = row.querySelector(".scallion").checked ? "O" : "X";
+      const ginger = row.querySelector(".ginger").checked ? "O" : "X";
+      const soySauce = row.querySelector(".soy-sauce").checked ? "O" : "X";
+      const chiliOil = row.querySelector(".chili-oil").checked ? "O" : "X";
+
+      let orderParams = `&order${index}_quantity=${quantity}&order${index}_scallion=${scallion}&order${index}_ginger=${ginger}&order${index}_soySauce=${soySauce}&order${index}_chiliOil=${chiliOil}`;
+
+      if (firstOrder) {
+        orderParams += `&sweetSoyMilkHot=${drinks.sweetSoyMilkHot}&sweetSoyMilkCold=${drinks.sweetSoyMilkCold}&unsweetSoyMilkHot=${drinks.unsweetSoyMilkHot}&unsweetSoyMilkCold=${drinks.unsweetSoyMilkCold}&riceMilkHot=${drinks.riceMilkHot}&riceMilkCold=${drinks.riceMilkCold}&barleySoupHot=${drinks.barleySoupHot}&barleySoupCold=${drinks.barleySoupCold}&totalAmount=${totalAmount}&remarks=${encodeURIComponent(remarks)}`;
+        firstOrder = false;
+      } else {
+        orderParams += `&sweetSoyMilkHot=0&sweetSoyMilkCold=0&unsweetSoyMilkHot=0&unsweetSoyMilkCold=0&riceMilkHot=0&riceMilkCold=0&barleySoupHot=0&barleySoupCold=0&totalAmount=0&remarks=`;
+      }
+      orders.push(orderParams);
+    }
+  });
+
+  if (orders.length === 0) {
+    alert("請至少選擇一份餐點！");
+    return;
+  }
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbx0f3WO5joN7EKjMy0C2cEeeaAQe9GoRmfwD3Y7ocOMTiONc9zefRWtq9vR1sbxB6g/exec";
+  const params = `?phone=${phoneLastThree}&time=${time}`;
+  const fullURL = scriptURL + params + orders.join("");
+
+  fetch(fullURL, { method: "GET" })
+    .then(response => response.json())
+    .then(data => {
+      if (data.result === "success") {
+        alert("訂單提交成功！");
+      } else {
+        alert(`訂單提交失敗：${data.message}`);
+      }
+    })
+    .catch(error => {
+      alert(`訂單提失敗：${error.message}，請等待網路連線！`);
+      // 嘗試重新提交訂單（可選）
+       // 嘗試重新提交訂單（可選）
+       if (confirm("是否重新提交訂單？")) {
+                submitOrder();
+            }
+    });
+}
+
+function clearTable() {
+  document.querySelectorAll('.order-input').forEach(input => input.value = 0);
+  document.querySelectorAll('.drink-input').forEach(input => input.value = 0);
+  document.querySelectorAll('.scallion, .ginger, .soy-sauce, .chili-oil').forEach(checkbox => checkbox.checked = false);
+  calculateTotal();
+}
+</script>
+</body>
+</html>
