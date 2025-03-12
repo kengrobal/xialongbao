@@ -74,6 +74,22 @@
         label {
             margin-right: 5px; /* 增加 label 和 input 之間的間距 */
         }
+        #phone-keyboard button {
+    width: 30%;
+    margin: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+    #phone-keyboard-clear {
+       width: 90%;
+       margin-top: 10px;
+       padding: 10px;
+       box-sizing: border-box;
+       font-size: 18px;
+       background-color: #ddd;
+    }
     </style>
 </head>
 <body>
@@ -318,6 +334,7 @@
                 <label for="phone-last-three">輸入手機末三碼:</label>
                 <input type="number" id="phone-last-three" min="000" max="999">
             </div>
+            
             <div class="input-group">
                 <label for="selected-time">預定取餐時間:</label>
                 <input type="time" id="selected-time" min="06:30" max="13:30">
@@ -325,8 +342,43 @@
             <button onclick="submitOrder()">確定</button>
             <button onclick="clearTable()">清除</button>
         </div>
-
+        <div id="phone-keyboard" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f0f0f0; padding: 10px; text-align: center;">
+          <button data-value="1">1</button>
+          <button data-value="2">2</button>
+          <button data-value="3">3</button>
+          <button data-value="4">4</button>
+          <button data-value="5">5</button>
+          <button data-value="6">6</button>
+          <button data-value="7">7</button>
+          <button data-value="8">8</button>
+          <button data-value="9">9</button>
+          <button data-value="0">0</button>
+          <button id="phone-keyboard-clear">清除</button>
+      </div>
 <script>
+// 顯示數字鍵盤
+document.getElementById('phone-last-three').addEventListener('focus', function() {
+    document.getElementById('phone-keyboard').style.display = 'block';
+});
+
+// 數字鍵盤按鈕事件處理程式
+document.querySelectorAll('#phone-keyboard button[data-value]').forEach(button => {
+    button.addEventListener('click', function() {
+        let phoneInput = document.getElementById('phone-last-three');
+        if (phoneInput.value.length < 3) {
+            phoneInput.value += this.dataset.value;
+        }
+        if (phoneInput.value.length === 3) {
+            document.getElementById('phone-keyboard').style.display = 'none';
+            document.getElementById('selected-time').focus();
+        }
+    });
+});
+
+// 清除按鈕事件處理程式
+document.getElementById('phone-keyboard-clear').addEventListener('click', function() {
+    document.getElementById('phone-last-three').value = '';
+});
 function calculateTotal() {
   let xiaolongbaoTotal = 0;
   document.querySelectorAll('.order-input.quantity').forEach((input, index) => {
