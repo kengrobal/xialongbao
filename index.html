@@ -77,18 +77,23 @@
     </style>
 </head>
 <body>
+  <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1001;">
+    資料整合中，請稍等...
+  </div>
+  <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;"></div>
+
   <div id="order-form">
   </div>
 
-  <div id="capacity-info" style="position: absolute; top: 10px; right: 20px; text-align: right;">
-    <p>可供籠數：<span id="available-capacity"></span>
-       尚未完成籠數：<span id="pending-orders"></span>
-    </p>
-  </div>
+ 
 
     <div class="container">
         <h1>小籠包及飲品訂貨系統</h1>
-
+           <div id="capacity-info" style="text-align: center; margin-bottom: 10px;">
+               <p>可供籠數：<span id="available-capacity"></span>
+                  尚未完成籠數：<span id="pending-orders"></span>
+              </p>
+           </div>
         <table id="orderTable">
             <thead>
                 <tr><th>數量</th><th>價格/籠</th><th>蔥</th><th>薑絲</th><th>醬油膏</th><th>辣油</th><th>金額</th></tr>
@@ -177,18 +182,130 @@
             <tbody>
                 <tr>
                     <td>熱</td>
-                    <td><input type="number" min="0" class="drink-input hot" data-price="25" data-type="sweet-soy-milk" data-label="有糖豆漿熱" oninput="calculateTotal()"></td>
-                    <td><input type="number" min="0" class="drink-input hot" data-price="25" data-type="unsweet-soy-milk" data-label="無糖豆漿熱" oninput="calculateTotal()"></td>
-                    <td><input type="number" min="0" class="drink-input hot" data-price="30" data-type="barley-soup" data-label="薏仁湯熱" oninput="calculateTotal()"></td>
-                    <td><input type="number" min="0" class="drink-input hot" data-price="30" data-type="rice-milk" data-label="米漿熱" oninput="calculateTotal()"></td>
+                    <td>
+                      <select class="drink-input hot" data-price="25" data-type="sweet-soy-milk" data-label="有糖豆漿熱" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="drink-input hot" data-price="25" data-type="unsweet-soy-milk" data-label="無糖豆漿熱" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="drink-input hot" data-price="30" data-type="barley-soup" data-label="薏仁湯熱" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="drink-input hot" data-price="30" data-type="rice-milk" data-label="米漿熱" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>                    
                     <td id="drink-hot-total">0</td>
                 </tr>
                 <tr>
                     <td>冷</td>
-                    <td><input type="number" min="0" class="drink-input cold" data-price="25" data-type="sweet-soy-milk" data-label="有糖豆漿冷" oninput="calculateTotal()"></td>
-                    <td><input type="number" min="0" class="drink-input cold" data-price="25" data-type="unsweet-soy-milk" data-label="無糖豆漿冷" oninput="calculateTotal()"></td>
-                    <td><input type="number" min="0" class="drink-input cold" data-price="30" data-type="barley-soup" data-label="薏仁湯冷" oninput="calculateTotal()"></td>
-                    <td><input type="number" min="0" class="drink-input cold" data-price="30" data-type="rice-milk" data-label="米漿冷" oninput="calculateTotal()"></td>
+                    <td>
+                      <select class="drink-input cold" data-price="25" data-type="sweet-soy-milk" data-label="有糖豆漿冷" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="drink-input cold" data-price="25" data-type="unsweet-soy-milk" data-label="無糖豆漿冷" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="drink-input cold" data-price="30" data-type="barley-soup" data-label="薏仁湯冷" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="drink-input cold" data-price="30" data-type="rice-milk" data-label="米漿冷" onchange="calculateTotal()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </td>       
                     <td id="drink-cold-total">0</td>
                 </tr>
                 <tfoot>
@@ -264,6 +381,9 @@ function validateQuantity(quantity, availableCapacity) {
   return quantity;
 }
 async function getCapacityInfo() {
+   // 顯示訊息和覆蓋層
+   document.getElementById("loading-message").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
   try {
     const response = await fetch("https://script.google.com/macros/s/AKfycbwNVzqVFlS5w2GsZ6gQn-j5I5ITPVFmOxeUrNUbgJMWO6fIe-7kmj9DZNHhumUsOA/exec");
     const data = await response.json();
@@ -280,7 +400,11 @@ async function getCapacityInfo() {
     }
   } catch (error) {
     console.error("獲取容量資訊時發生錯誤：", error);
-  }
+  }   finally {
+        // 隱藏訊息和覆蓋層
+        document.getElementById("loading-message").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
 }
 
 window.onload = getCapacityInfo;
