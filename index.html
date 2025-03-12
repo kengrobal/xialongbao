@@ -74,22 +74,21 @@
         label {
             margin-right: 5px; /* 增加 label 和 input 之間的間距 */
         }
-        #phone-keyboard button {
-    width: 30%;
-    margin: 5px;
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 18px;
-}
+        @media (max-width: 600px) {
+    #phone-keyboard button {
+        width: 22%;
+        margin: 2px;
+        padding: 6px;
+        font-size: 14px;
+    }
 
     #phone-keyboard-clear {
-       width: 90%;
-       margin-top: 10px;
-       padding: 10px;
-       box-sizing: border-box;
-       font-size: 18px;
-       background-color: #ddd;
+        width: 90%;
+        margin-top: 3px;
+        padding: 6px;
+        font-size: 14px;
     }
+}
     </style>
 </head>
 <body>
@@ -370,7 +369,7 @@ document.querySelectorAll('#phone-keyboard button[data-value]').forEach(button =
         }
         if (phoneInput.value.length === 3) {
             document.getElementById('phone-keyboard').style.display = 'none';
-            document.getElementById('selected-time').focus();
+            //document.getElementById('selected-time').focus();
         }
     });
 });
