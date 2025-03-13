@@ -108,6 +108,7 @@
         margin: 3px;
         padding: 6px;
         font-size: 16px;
+        display: none; /* 新增 display: none; */
     }
 
     #phone-keyboard-clear {
@@ -115,7 +116,7 @@
         margin-top: 3px;
         padding: 6px;
         font-size: 8px;
-        
+        display: none; /* 新增 display: none; */
     }
 }
     </style>
@@ -391,29 +392,30 @@
           <button id="phone-keyboard-clear">清除</button>
       </div>
 <script>
-  const phoneInput = document.getElementById('phone-last-three');
-  const phoneKeyboard = document.getElementById('phone-keyboard');
+ const phoneInput = document.getElementById('phone-last-three');
+const phoneKeyboard = document.getElementById('phone-keyboard');
 
-  phoneInput.addEventListener('focus', () => {
+phoneInput.addEventListener('focus', () => {
     // 判斷是否為手機環境
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         phoneKeyboard.style.display = 'block';
         // 阻止手機本身的輸入畫面顯示
         document.activeElement.blur();
+        // 阻止手機本身的輸入畫面顯示
+        phoneInput.setAttribute('readonly', true);
     } else {
         // 電腦環境，不阻止鍵盤輸入
         phoneKeyboard.style.display = 'block';
     }
-  });
-
-  phoneInput.addEventListener('blur', () => {
-    phoneKeyboard.style.display = 'none';
-  });
-// 顯示數字鍵盤
-document.getElementById('phone-last-three').addEventListener('focus', function() {
-    document.getElementById('phone-keyboard').style.display = 'block';
 });
+
+phoneInput.addEventListener('blur', () => {
+    phoneKeyboard.style.display = 'none';
+    phoneInput.removeAttribute('readonly');
+});
+
 let lastModifiedIndex = -1; // 初始化為 -1，表示沒有修改任何輸入框
+
 // 數字鍵盤按鈕事件處理程式
 document.querySelectorAll('#phone-keyboard button[data-value]').forEach(button => {
     button.addEventListener('click', function() {
@@ -432,6 +434,7 @@ document.querySelectorAll('#phone-keyboard button[data-value]').forEach(button =
 document.getElementById('phone-keyboard-clear').addEventListener('click', function() {
     document.getElementById('phone-last-three').value = '';
 });
+
 function calculateTotal() {
   let xiaolongbaoTotal = 0;
   document.querySelectorAll('.order-input.quantity').forEach((input, index) => {
