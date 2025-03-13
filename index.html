@@ -101,7 +101,7 @@
     }
         @media (max-width: 600px) {
     #phone-keyboard button {
-        width: 15%;
+        width: 18%;
         margin: 3px;
         padding: 6px;
         font-size: 16px;
@@ -129,7 +129,7 @@
  
 
     <div class="container">
-        <h1>小籠包及飲品訂貨系統</h1>
+        <h1>宮太鮮鹿港店小籠湯包及飲品訂單系統</h1>
            <div id="capacity-info" style="text-align: center; margin-bottom: 10px;">
                <p>可供籠數：<span id="available-capacity"></span>
                   尚未完成籠數：<span id="pending-orders"></span>
@@ -215,7 +215,7 @@
             </tfoot>
         </table>
 
-        <h2>飲品(500ML/杯)</h2>
+        
         <table id="drinkTable">
             <thead>
                 <tr><th>數量(杯)</th><th>有糖豆漿25</th><th>無糖豆漿25</th><th>薏仁湯30</th><th>米漿30</th><th>金額</th></tr>
@@ -350,8 +350,12 @@
                     <td id="drink-cold-total">0</td>
                 </tr>
                 <tfoot>
-                    <tr><td colspan="4"></td><td>小計:</td><td id="drink-subtotal">0</td></tr>
-                    <tr><td colspan="4"></td><td>總金額:</td><td id="total-amount">0</td></tr>
+                   <tr>
+                      <td colspan="2" style="text-align: right;">總金額:</td>
+                      <td colspan="2" id="total-amount" style="text-align: center; font-size: 1.5em; color: red;">0</td>
+                      <td style="text-align: right;">小計:</td>
+                      <td id="drink-subtotal">0</td>
+                </tr>
                 </tfoot>
             </table>
 
