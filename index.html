@@ -366,9 +366,10 @@
 
             <div class="input-group">
                 <label for="phone-last-three">輸入手機末三碼:</label>
-                <input type="number" id="phone-last-three" min="000" max="999">
+                <input type="number" id="phone-last-three" maxlength="3" readonly onfocus="showKeyboard()" onblur="hideKeyboard()" min="000" max="999">
             </div>
-            
+            <div id="phone-keyboard" style="display: none;">
+            </div>
             <div class="input-group">
                 <label for="selected-time">預定取餐時間:</label>
                 <input type="time" id="selected-time" min="06:30" max="13:30">
@@ -460,11 +461,7 @@ function calculateTotal() {
         if (modifiedInputValue >= 0) { // 確保調整後的值不為負數
             modifiedInput.value = modifiedInputValue;
         }
-        // 重新計算 xiaolongbaoQuantity
-        //xiaolongbaoQuantity = 0;
-        //document.querySelectorAll('.order-input.quantity').forEach(input => {
-         //   xiaolongbaoQuantity += parseInt(input.value) || 0;
-       // });    
+        
     calculateTotal(); // 重新計算總金額
   } 
   // 獲取上班和下班時間
@@ -571,6 +568,15 @@ function calculatePickupTime(startTime, endTime, pendingOrders, quantity) {
   pickupTime.setMinutes(pickupTime.getMinutes() + orderTime);
 
   return pickupTime;
+}
+function showKeyboard() {
+    document.getElementById('phone-keyboard').style.display = 'block';
+    // 阻止手機本身的輸入畫面顯示
+    document.activeElement.blur();
+}
+
+function hideKeyboard() {
+    document.getElementById('phone-keyboard').style.display = 'none';
 }
 function submitOrder() {
    // 顯示覆蓋層和訊息框
