@@ -122,7 +122,7 @@
 </head>
 <body>
   <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1001;">
-    訂單傳遞中，請稍等...
+    資料整合中，請稍等...
   </div>
   <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;"></div>
   <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1001;">資料傳遞中，請稍候...</div>
@@ -366,7 +366,7 @@
 
             <div class="input-group">
                 <label for="phone-last-three">輸入手機末三碼:</label>
-                <input type="number" id="phone-last-three" maxlength="3" readonly onfocus="showKeyboard()" onblur="hideKeyboard()" min="000" max="999">
+                <input type="number" id="phone-last-three" maxlength="3" min="000" max="999">
             </div>
             <div id="phone-keyboard" style="display: none;">
             </div>
@@ -391,6 +391,24 @@
           <button id="phone-keyboard-clear">清除</button>
       </div>
 <script>
+  const phoneInput = document.getElementById('phone-last-three');
+  const phoneKeyboard = document.getElementById('phone-keyboard');
+
+  phoneInput.addEventListener('focus', () => {
+    // 判斷是否為手機環境
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        phoneKeyboard.style.display = 'block';
+        // 阻止手機本身的輸入畫面顯示
+        document.activeElement.blur();
+    } else {
+        // 電腦環境，不阻止鍵盤輸入
+        phoneKeyboard.style.display = 'block';
+    }
+  });
+
+  phoneInput.addEventListener('blur', () => {
+    phoneKeyboard.style.display = 'none';
+  });
 // 顯示數字鍵盤
 document.getElementById('phone-last-three').addEventListener('focus', function() {
     document.getElementById('phone-keyboard').style.display = 'block';
