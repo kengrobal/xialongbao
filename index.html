@@ -122,8 +122,10 @@
 </head>
 <body>
   <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1001;">
-    資料整合中，請稍等...
+    訂單傳遞中，請稍等...
   </div>
+  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;"></div>
+  <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1001;">資料傳遞中，請稍候...</div>
   <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;"></div>
 
   <div id="order-form">
@@ -571,8 +573,10 @@ function calculatePickupTime(startTime, endTime, pendingOrders, quantity) {
   return pickupTime;
 }
 function submitOrder() {
-
-  // ... 將訂單資料和 pickupTime 發送到 Google Apps Scri
+   // 顯示覆蓋層和訊息框
+    document.getElementById("loading-overlay").style.display = "block";
+    document.getElementById("loading-message").style.display = "block";
+   // ... 將訂單資料和 pickupTime 發送到 Google Apps Scri
   const phoneInput = document.getElementById("phone-last-three").value.trim();
   if (phoneInput.length < 3) {
     alert("請輸入有效的手機號碼末三碼！");
@@ -664,9 +668,15 @@ function submitOrder() {
       } else {
         alert(`訂單提交失敗：${data.message}`);
       }
+        // 隱藏覆蓋層和訊息框
+      document.getElementById("loading-overlay").style.display = "none";
+      document.getElementById("loading-message").style.display = "none";
     })
     .catch(error => {
       // ... (您的錯誤處理程式碼) ...
+      // 隱藏覆蓋層和訊息框
+      document.getElementById("loading-overlay").style.display = "none";
+      document.getElementById("loading-message").style.display = "none";
     });
 }
 
