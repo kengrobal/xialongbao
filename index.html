@@ -76,17 +76,17 @@
         }
         @media (max-width: 600px) {
     #phone-keyboard button {
-        width: 22%;
-        margin: 2px;
-        padding: 6px;
-        font-size: 14px;
+        width: 5%;
+        margin: 1px;
+        padding: 3px;
+        font-size: 8px;
     }
 
     #phone-keyboard-clear {
-        width: 90%;
+        width: 70%;
         margin-top: 3px;
         padding: 6px;
-        font-size: 14px;
+        font-size: 8px;
     }
 }
     </style>
@@ -116,7 +116,7 @@
             <tbody>
               <tr>
                 <td>
-                  <select class="order-input quantity" data-price="85" onchange="calculateTotal()">
+                  <select class="order-input quantity" data-price="85" onchange="updateLastModifiedIndex(this);calculateTotal()">
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -139,7 +139,7 @@
               </tr>
               <tr>
                 <td>
-                  <select class="order-input quantity" data-price="85" onchange="calculateTotal()">
+                  <select class="order-input quantity" data-price="85" onchange="updateLastModifiedIndex(this);calculateTotal()">
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -162,7 +162,7 @@
               </tr>
               <tr>
                 <td>
-                  <select class="order-input quantity" data-price="85" onchange="calculateTotal()">
+                  <select class="order-input quantity" data-price="85" onchange="updateLastModifiedIndex(this);calculateTotal()">
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -359,7 +359,7 @@
 document.getElementById('phone-last-three').addEventListener('focus', function() {
     document.getElementById('phone-keyboard').style.display = 'block';
 });
-
+let lastModifiedIndex = -1; // 初始化為 -1，表示沒有修改任何輸入框
 // 數字鍵盤按鈕事件處理程式
 document.querySelectorAll('#phone-keyboard button[data-value]').forEach(button => {
     button.addEventListener('click', function() {
@@ -412,7 +412,26 @@ function calculateTotal() {
   // 獲取可供籠數和未完成籠數
   let availableCapacity = parseInt(document.getElementById("available-capacity").textContent) || 0;
   let pendingOrders = parseInt(document.getElementById("pending-orders").textContent) || 0;
+  // 驗證數量
+  let validatedQuantity = validateQuantity(xiaolongbaoQuantity, availableCapacity);
+ // 如果驗證後的數量與原始數量不同，則只更改最後一個輸入框的值
+ if (validatedQuantity !== xiaolongbaoQuantity) {
+        let diff = validatedQuantity - xiaolongbaoQuantity;
+        let inputs = document.querySelectorAll('.order-input.quantity');
+        let modifiedInput = inputs[lastModifiedIndex]; // 獲取最後修改的輸入框
 
+        // 調整最後修改的輸入框的值
+        let modifiedInputValue = parseInt(modifiedInput.value) + diff;
+        if (modifiedInputValue >= 0) { // 確保調整後的值不為負數
+            modifiedInput.value = modifiedInputValue;
+        }
+        // 重新計算 xiaolongbaoQuantity
+        //xiaolongbaoQuantity = 0;
+        //document.querySelectorAll('.order-input.quantity').forEach(input => {
+         //   xiaolongbaoQuantity += parseInt(input.value) || 0;
+       // });    
+    calculateTotal(); // 重新計算總金額
+  } 
   // 獲取上班和下班時間
   let startTime = "06:30"; // 假設上班時間為 06:30
   let endTime = "13:30"; // 假設下班時間為 13:30
@@ -424,12 +443,16 @@ function calculateTotal() {
   let formattedTime = pickupTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
   document.getElementById("selected-time").value = formattedTime;
 }
-function validateQuantity(quantity, availableCapacity) {
-  if (parseInt(quantity) > availableCapacity) {
-    alert("已超過可供數量，最多可訂購 " + availableCapacity + " 籠");
-    return availableCapacity;
-  }
-  return quantity;
+function updateLastModifiedIndex(input) {
+    let inputs = document.querySelectorAll('.order-input.quantity');
+    lastModifiedIndex = Array.prototype.indexOf.call(inputs, input);
+}
+function validateQuantity(xiaolongbaoQuantity, availableCapacity) {
+    if (xiaolongbaoQuantity > availableCapacity) {
+        alert("已超過可供數量，最多可訂購 " + availableCapacity + " 籠");
+        return availableCapacity;
+    }
+    return xiaolongbaoQuantity;
 }
 async function getCapacityInfo() {
    // 顯示訊息和覆蓋層
