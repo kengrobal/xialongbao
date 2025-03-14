@@ -401,6 +401,7 @@
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             phoneKeyboard.style.display = 'block';
             // 阻止手機本身的輸入畫面顯示
+            console.log('DOM 已準備就緒！');
             document.activeElement.blur();
         } else {
             // 電腦環境，不阻止鍵盤輸入
