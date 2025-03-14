@@ -379,7 +379,7 @@
  document.getElementById('phone-last-three').addEventListener('input', function() {
             if (this.value.length === 3) {
                 window.scrollTo(0, 0);
-                document.body.style.transform = 'scale(0.5)'; // 將網頁縮小為 0.8 倍
+                document.body.style.transform = 'scale(1)'; // 將網頁縮小為 0.8 倍
                 // 取得「確定」按鈕的元素
                const confirmButton = document.querySelector('button[onclick="submitOrder()"]'); // 假設您的確定按鈕的 onclick 事件是 submitOrder()
                // 將焦點設定到「確定」按鈕
