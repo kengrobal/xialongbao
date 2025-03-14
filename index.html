@@ -392,28 +392,26 @@
           <button id="phone-keyboard-clear">清除</button>
       </div>
 <script>
- const phoneInput = document.getElementById('phone-last-three');
-const phoneKeyboard = document.getElementById('phone-keyboard');
+ document.addEventListener('DOMContentLoaded', () => {
+    const phoneInput = document.getElementById('phone-last-three');
+    const phoneKeyboard = document.getElementById('phone-keyboard');
 
-phoneInput.addEventListener('focus', () => {
-    // 判斷是否為手機環境
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        phoneKeyboard.style.display = 'block';
-        // 阻止手機本身的輸入畫面顯示
-        document.activeElement.blur();
-        // 阻止手機本身的輸入畫面顯示
-        phoneInput.setAttribute('readonly', true);
-    } else {
-        // 電腦環境，不阻止鍵盤輸入
-        phoneKeyboard.style.display = 'block';
-    }
-});
+    phoneInput.addEventListener('focus', () => {
+        // 判斷是否為手機環境
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            phoneKeyboard.style.display = 'block';
+            // 阻止手機本身的輸入畫面顯示
+            document.activeElement.blur();
+        } else {
+            // 電腦環境，不阻止鍵盤輸入
+            phoneKeyboard.style.display = 'block';
+        }
+    });
 
-phoneInput.addEventListener('blur', () => {
-    phoneKeyboard.style.display = 'none';
-    phoneInput.removeAttribute('readonly');
-});
-
+    phoneInput.addEventListener('blur', () => {
+        phoneKeyboard.style.display = 'none';
+    });
+  });
 let lastModifiedIndex = -1; // 初始化為 -1，表示沒有修改任何輸入框
 
 // 數字鍵盤按鈕事件處理程式
