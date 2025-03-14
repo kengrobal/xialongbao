@@ -379,7 +379,7 @@
  document.getElementById('phone-last-three').addEventListener('input', function() {
             if (this.value.length === 3) {
                 window.scrollTo(0, 0);
-                document.body.style.zoom = '1';
+                document.body.style.transform = 'scale(0.8)'; // 將網頁縮小為 0.8 倍
             }
   });
   document.getElementById("selected-time").addEventListener("change", function() {
