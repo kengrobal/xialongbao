@@ -397,14 +397,11 @@
     const phoneKeyboard = document.getElementById('phone-keyboard');
 
     phoneInput.addEventListener('focus', () => {
-        // 判斷是否為手機環境
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             phoneKeyboard.style.display = 'block';
-            // 阻止手機本身的輸入畫面顯示
-            console.log('DOM 已準備就緒！');
-            document.activeElement.blur();
+            phoneInput.setAttribute('readonly', true);
+            console.log('手機版DOM 已準備就緒！');
         } else {
-            // 電腦環境，不阻止鍵盤輸入
             console.log('電腦版DOM 已準備就緒！');
             phoneKeyboard.style.display = 'block';
         }
@@ -412,8 +409,9 @@
 
     phoneInput.addEventListener('blur', () => {
         phoneKeyboard.style.display = 'none';
+        phoneInput.removeAttribute('readonly');
     });
-  });
+});
 let lastModifiedIndex = -1; // 初始化為 -1，表示沒有修改任何輸入框
 
 // 數字鍵盤按鈕事件處理程式
